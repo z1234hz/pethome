@@ -1,0 +1,371 @@
+<!DOCTYPE html><html lang="zh-CN"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0"><title>PetHome · 回家 — AI寻宠互助平台</title>
+<link rel="manifest" href="manifest.json"><meta name="theme-color" content="#ff6b35"><meta name="apple-mobile-web-app-capable" content="yes">
+<link rel="apple-touch-icon" href="icon-192.png"><style>
+*{margin:0;padding:0;box-sizing:border-box;font-family:-apple-system,"PingFang SC","Microsoft YaHei",sans-serif;-webkit-tap-highlight-color:transparent}
+:root{--p:#ff6b35;--pd:#e55a2b;--pl:#fff0e8;--g:#f59e0b;--d:#6366f1;--s:#10b981;--da:#ef4444;--bg:#f0f2f5;--c:#fff;--t:#1e293b;--t2:#64748b;--b:#e2e8f0;--r:12px;--sh:0 2px 12px rgba(0,0,0,.08)}
+body{background:var(--bg);color:var(--t);min-height:100vh;padding-bottom:54px;overflow-x:hidden}.page{display:none;padding:0}.page.active{display:block;animation:fadeIn .3s}@keyframes fadeIn{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:translateY(0)}}
+.logout-page{position:fixed;top:0;left:0;right:0;bottom:0;background:linear-gradient(135deg,var(--p),var(--pd));display:flex;flex-direction:column;align-items:center;justify-content:center;z-index:999;padding:30px}
+.logout-page .logo{font-size:48px;margin-bottom:6px}.logout-page h1{color:#fff;font-size:24px;font-weight:800}.logout-page p{color:rgba(255,255,255,.8);font-size:13px;margin:4px 0 20px}
+.logout-page input{width:100%;max-width:300px;padding:12px 16px;border:none;border-radius:25px;font-size:15px;margin:4px 0;outline:none}
+.logout-page .btn{width:100%;max-width:300px;padding:12px;border:none;border-radius:25px;font-size:15px;font-weight:700;cursor:pointer;margin:4px 0;transition:.3s}
+.logout-page .btn-p{background:var(--c);color:var(--p)}.logout-page .btn-g{background:rgba(255,255,255,.2);color:#fff;border:1px solid rgba(255,255,255,.3)}
+.logout-page .divider{color:rgba(255,255,255,.5);margin:12px 0;font-size:13px}
+.hdr{background:linear-gradient(135deg,var(--p),var(--pd));color:#fff;padding:10px 14px;position:sticky;top:0;z-index:50}.hdr-top{display:flex;align-items:center;gap:6px;font-size:14px;font-weight:700}.hdr-top .right{margin-left:auto;display:flex;gap:8px;font-size:16px;cursor:pointer}
+.hdr-stats{display:flex;gap:6px;margin-top:6px;font-size:11px;overflow-x:auto}.hdr-stats .hs{background:rgba(255,255,255,.1);padding:3px 8px;border-radius:6px;white-space:nowrap}.hdr-stats .hs .n{font-weight:700;font-size:13px}
+.inv-banner{background:linear-gradient(135deg,#fffbeb,#fef3c7);padding:6px 12px;display:flex;align-items:center;gap:6px;font-size:11px;cursor:pointer}.inv-banner .bar{flex:1;height:6px;background:#fde68a;border-radius:3px;overflow:hidden;max-width:60px}.inv-banner .bar .f{height:100%;background:var(--g);border-radius:3px}
+.card{background:var(--c);border-radius:var(--r);margin:6px 8px;overflow:hidden}.card-hd{padding:10px 12px 4px;font-size:14px;font-weight:700;display:flex;justify-content:space-between}.card-bd{padding:4px 12px 10px}
+.map-box{height:180px;margin:6px 8px;border-radius:var(--r);overflow:hidden;position:relative}.map-box svg{width:100%;height:100%}
+.q-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:4px;padding:4px 0}.q-btn{text-align:center;padding:8px 2px;background:var(--pl);border-radius:8px;cursor:pointer;border:none;color:var(--t);font-size:11px;transition:.2s}.q-btn:active{transform:scale(.95)}.q-btn .ic{font-size:22px;display:block}
+.pet-card{display:flex;gap:8px;padding:8px;border-bottom:1px solid var(--b);cursor:pointer;transition:.2s}.pet-card:last-child{border:none}.pet-card:active{background:var(--pl)}
+.pet-card .av{width:48px;height:48px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:26px;background:var(--pl);flex-shrink:0}
+.pet-card .info{flex:1}.pet-card .info h4{font-size:13px}.pet-card .info .tags{display:flex;gap:2px;margin:1px 0;flex-wrap:wrap}.pet-card .info .tags span{padding:1px 6px;border-radius:4px;font-size:10px;background:var(--pl);color:var(--p)}
+.tag-urgent{background:var(--da)!important;color:#fff!important;font-size:9px!important}.tag-found{background:var(--s)!important;color:#fff!important}.tag-rwd{background:var(--g)!important;color:#fff!important}
+.fg{margin-bottom:6px}.fg label{font-size:11px;font-weight:600;color:var(--t2);display:block;margin-bottom:1px}
+.fg input,.fg select,.fg textarea{width:100%;padding:7px 10px;border:1px solid var(--b);border-radius:6px;font-size:13px;outline:none;background:var(--c);color:var(--t)}
+.fg input:focus,.fg select:focus,.fg textarea:focus{border-color:var(--p)}.fg textarea{resize:vertical;min-height:44px;font-family:inherit}.fg-row{display:flex;gap:4px}.fg-row>*{flex:1}
+.btn{display:inline-flex;align-items:center;justify-content:center;padding:7px 16px;border-radius:20px;border:none;font-size:12px;font-weight:600;cursor:pointer;transition:.3s;gap:4px}.btn-p{background:var(--p);color:#fff}.btn-o{background:transparent;border:1px solid var(--b);color:var(--t)}.btn-s{background:var(--s);color:#fff}.btn-g{background:var(--g);color:#fff}.btn-d{background:var(--d);color:#fff}.btn-block{width:100%}.btn-sm{padding:3px 10px;font-size:11px}
+.nav{position:fixed;bottom:0;left:0;right:0;background:var(--c);border-top:1px solid var(--b);display:flex;z-index:100;padding:3px 0}.nav-item{flex:1;text-align:center;padding:2px 0;border:none;background:none;color:var(--t2);font-size:9px;cursor:pointer;position:relative}.nav-item .ic{font-size:20px;display:block}.nav-item.active{color:var(--p)}
+.modal-overlay{display:none;position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,.5);z-index:999;justify-content:center;align-items:center;padding:20px}.modal-overlay.show{display:flex}.modal{background:var(--c);border-radius:16px;padding:18px;max-width:360px;width:100%;max-height:80vh;overflow-y:auto}
+.modal h2{font-size:15px;margin-bottom:4px}.modal .pay-b{border-radius:8px;padding:10px;text-align:center;margin:6px 0}.modal .pay-b .big{font-size:28px;font-weight:800;color:var(--p)}.modal .close-btn{width:100%;padding:8px;border:none;border-radius:6px;cursor:pointer;background:var(--b);font-size:13px;margin-top:6px;color:var(--t)}
+.toast{position:fixed;top:50px;left:50%;transform:translateX(-50%);background:#1e293b;color:#fff;padding:7px 14px;border-radius:8px;font-size:12px;z-index:1000;display:none}.toast.show{display:block;animation:ti .3s}@keyframes ti{from{opacity:0;transform:translateX(-50%) translateY(-6px)}to{opacity:1;transform:translateX(-50%) translateY(0)}}
+.plan-c{border:1px solid var(--b);border-radius:var(--r);padding:10px;margin-bottom:5px;cursor:pointer;transition:.3s;background:var(--c)}
+.plan-c:hover{border-color:var(--p)}.plan-c.pop{border-color:var(--g);background:linear-gradient(135deg,#fffbeb,#fff)}.plan-c .nm{font-weight:700;font-size:13px}.plan-c .pr{font-size:22px;font-weight:800;color:var(--p)}.plan-c .pr sp{font-size:12px;color:var(--t2);font-weight:400}
+.match-c{background:var(--c);border-radius:var(--r);padding:8px;margin-bottom:5px;border-left:3px solid var(--s)}.match-c.med{border-left-color:var(--g)}.match-c.low{border-left-color:var(--t2)}
+.match-c .top{display:flex;justify-content:space-between}.match-c .sc{font-size:16px;font-weight:800}.match-c .sc.high{color:var(--s)}.match-c .sc.med{color:var(--g)}
+.match-c .bar{height:4px;background:var(--b);border-radius:2px;margin:3px 0;overflow:hidden}.match-c .bar .f{height:100%;border-radius:2px}.match-c .bar .f.high{background:var(--s)}.match-c .bar .f.med{background:var(--g)}
+.inv-code{font-size:24px;font-weight:800;letter-spacing:3px;color:var(--p);background:var(--pl);padding:6px 16px;border-radius:8px;display:inline-block;margin:4px 0}
+.rl{display:flex;justify-content:space-between;padding:3px 0;font-size:11px;border-bottom:1px solid var(--b)}.rl:last-child{border:none}.rl .ck{color:var(--s)}.rl .lk{color:var(--t2)}
+.task-i{display:flex;align-items:center;gap:6px;padding:6px 0;border-bottom:1px solid var(--b);font-size:12px}.task-i:last-child{border:none}.task-i .cb{width:18px;height:18px;border-radius:50%;border:2px solid var(--b);display:flex;align-items:center;justify-content:center;font-size:10px;cursor:pointer;flex-shrink:0}.task-i .cb.done{background:var(--s);border-color:var(--s);color:#fff}
+.lb-i{display:flex;align-items:center;gap:6px;padding:4px 0;border-bottom:1px solid var(--b);font-size:11px}.lb-i .rk{width:18px;text-align:center;font-weight:700}
+.chat-b{background:var(--pl);border-radius:10px;padding:6px 10px;margin:3px 0;font-size:12px;display:inline-block;max-width:80%}.chat-b.me{background:var(--p);color:#fff;float:right}.chat-in{display:flex;gap:4px;padding:6px 0}.chat-in input{flex:1;padding:6px 10px;border:1px solid var(--b);border-radius:16px;outline:none;font-size:12px}
+.empty-s{text-align:center;padding:24px 16px;color:var(--t2);font-size:12px}.pill{d{display:inline-block;padding:2px 8px;border:1px solid var(--b);border-radius:10px;font-size:11px;cursor:pointer;margin:1px;background:var(--c);color:var(--t)}.pill.active{background:var(--p);color:#fff;border-color:var(--p)}
+.slider{width:100%;height:100px;overflow:hidden;position:relative;background:var(--pl);border-radius:var(--r);margin:6px 0;display:flex;align-items:center;justify-content:center;font-size:40px;color:var(--t2)}
+</style></head><body>
+<div class="logout-page" id="loginPage"><div class="logo">&#128062;</div><h1>PetHome</h1><p>让每一个毛孩子都能回家</p>
+<input id="phoneInput" placeholder="手机号" maxlength="11" type="tel" style="margin-bottom:4px">
+<button class="btn btn-p" onclick="sendSMS()" style="margin-bottom:2px">获取短信验证码</button>
+<input id="codeInput" placeholder="验证码" maxlength="6" style="font-size:13px">
+<button class="btn btn-p" onclick="doLogin()" style="margin-top:2px">登录 / 注册</button>
+<div class="divider">— 或 —</div>
+<button class="btn btn-g" onclick="wechatLogin()">&#128154; 微信一键登录</button>
+<p style="color:rgba(255,255,255,.6);font-size:11px;margin-top:12px">登录即代表同意《用户协议》和《隐私政策》</p></div>
+<div id="appMain" style="display:none">
+<div class="hdr"><div class="hdr-top">&#128062; PetHome<span style="font-size:10px;font-weight:400;opacity:.8;margin-left:4px">· 回家</span>
+<span class="right"><span id="ptsTop" style="font-size:13px;font-weight:600">200</span>
+<span onclick="navTo('profile')">&#128100;</span></div></div>
+<div class="hdr-stats"><div class="hs">&#128200; <span class="n">89%</span> 找回率</div><div class="hs">&#128101; <span class="n">2.3k</span> 用户</div><div class="hs">&#127775; <span class="n">47</span> 已找回</div><div class="hs">&#128142; <span class="n">VIP</span> <span id="vipLabel">基础版</span></div></div></div>
+<div class="inv-banner" onclick="navTo('invite')"><span>&#127775;</span><b id="invBadge">免费解锁VIP</b> 已邀 <span id="invCountB">0</span> 人
+<div class="bar"><div class="f" id="invBar" style="width:0%"></div></div><span style="font-size:10px;color:var(--g)" id="invNext">邀3人送24hVIP</span></div>
+<div class="nav"><button class="nav-item active" onclick="navTo('home')"><span class="ic">&#127968;</span>首页</button>
+<button class="nav-item" onclick="navTo('search')"><span class="ic">&#128269;</span>发现</button>
+<button class="nav-item" onclick="navTo('post')"><span class="ic">&#10133;</span>发布</button>
+<button class="nav-item" onclick="navTo('invite')"><span class="ic">&#127775;</span>邀请</button>
+<button class="nav-item" onclick="navTo('profile')"><span class="ic">&#128100;</span>我的</button></div>
+<div class="page active" id="pageHome">
+<div class="map-box"><svg viewBox="0 0 320 180"><rect x="0" y="0" width="320" height="180" fill="#e8f4f8"/>
+<circle cx="120" cy="80" r="8" fill="#ef4444" stroke="#fff" stroke-width="2"><animate attributeName="r" values="8;10;8" dur="2s" repeatCount="indefinite"/></circle>
+<circle cx="200" cy="110" r="6" fill="#f59e0b" stroke="#fff" stroke-width="2"/>
+<circle cx="250" cy="60" r="6" fill="#6366f1" stroke="#fff" stroke-width="2"/>
+<circle cx="80" cy="130" r="5" fill="#10b981" stroke="#fff" stroke-width="2"/>
+<text x="120" y="96" font-size="8" fill="#fff" text-anchor="middle" font-weight="700">&#9888;</text>
+<text x="10" y="20" font-size="8" fill="#64748b">&#128205; 西湖区</text>
+<text x="10" y="170" font-size="7" fill="#94a3b8">+ 放大 &#8212; 缩小 &#8226; 1km/3km/5km/10km</text>
+</svg></div>
+<div class="card"><div class="card-bd"><div class="q-grid">
+<button class="q-btn" onclick="navTo('post')"><span class="ic">&#128062;</span>发布寻宠</button>
+<button class="q-btn" onclick="navTo('search')"><span class="ic">&#129302;</span>AI匹配</button>
+<button class="q-btn" onclick="navTo('invite')"><span class="ic">&#127775;</span>邀请得VIP</button>
+<button class="q-btn" onclick="showPay('月度VIP',29.9)"><span class="ic">&#128142;</span>升级VIP</button>
+</div></div></div>
+<div class="card-hd" style="margin:2px 8px;font-size:13px">&#128226; 附近寻宠 <span style="font-weight:400;color:var(--t2);font-size:11px" id="feedLabel">3 条</span></div>
+<div id="feed"></div></div>
+<div class="page" id="pageSearch"><div class="card"><div class="card-hd">&#129302; AI匹配中心</div><div class="card-bd">
+<div class="fg"><label>匹配案件</label><select id="matchSel" style="padding:5px;border:1px solid var(--b);border-radius:6px;width:100%;font-size:12px;background:var(--c);color:var(--t)"><option>咔咔 · 橘猫 · 西湖区</option><option>旺财 · 柴犬 · 拱墅区</option></select></div>
+<div id="matchList"><div class="match-c"><div class="top"><div><b>&#128049; 橘猫 #0615</b></div><div class="sc high">92%</div></div><div class="bar"><div class="f high" style="width:92%"></div></div><div style="font-size:11px;color:var(--t2);margin:2px 0">滨江区 1.2km · 颜色&#10003; 体型&#10003; 项圈&#10003;</div><div style="font-size:11px;color:var(--t2)">发现时间: 3小时前 · 同品种走失: 5条</div><button class="btn btn-sm btn-s" style="margin-top:4px" onclick="showToast('已联系发现者')">&#128222; 联系发现者</button></div>
+<div class="match-c med"><div class="top"><div><b>&#128049; 橘猫 #0614</b></div><div class="sc med">76%</div></div><div class="bar"><div class="f med" style="width:76%"></div></div><div style="font-size:11px;color:var(--t2);margin:2px 0">上城区 2.8km · 颜色&#10003; 体型&#10003; 项圈&#10007;</div><button class="btn btn-sm btn-o" style="margin-top:4px">查看</button></div></div>
+<button class="btn btn-o btn-block btn-sm" style="margin-top:4px" onclick="showToast('AI正在全库扫描…')">&#128269; 重新扫描匹配</button>
+</div></div></div>
+<div class="page" id="pagePost"><div class="card"><div class="card-hd">&#128221; 发布寻宠</div><div class="card-bd">
+<div class="fg"><label>类型</label><select id="ptype" style="padding:5px;border:1px solid var(--b);border-radius:6px;width:100%;font-size:12px;background:var(--c);color:var(--t)"><option value="cat">&#128049; 猫</option><option value="dog">&#128054; 狗</option><option value="other">&#128057; 其他</option></select></div>
+<div class="fg-row"><div class="fg"><label>名字</label><input id="pn" placeholder="如: 咪咪"></div><div class="fg"><label>品种</label><input id="pb" placeholder="如: 橘猫"></div></div>
+<div class="fg-row"><div class="fg"><label>毛色</label><input id="pc" placeholder="如: 橘黄色"></div><div class="fg"><label>性别</label><select id="pg" style="padding:5px;border:1px solid var(--b);border-radius:6px;font-size:12px;background:var(--c);color:var(--t)"><option>男孩</option><option>女孩</option><option>未知</option></select></div></div>
+<div class="fg"><label>显著特征</label><div style="display:flex;flex-wrap:wrap;gap:2px;padding:2px 0"><span class="pill" onclick="tog(this)">戴项圈</span><span class="pill" onclick="tog(this)">有芯片</span><span class="pill" onclick="tog(this)">穿衣服</span><span class="pill" onclick="tog(this)">受伤</span><span class="pill" onclick="tog(this)">特殊毛色</span><span class="pill" onclick="tog(this)">折耳</span><span class="pill" onclick="tog(this)">鸳鸯眼</span></div></div>
+<div class="fg"><label>走失时间</label><input id="pd" type="date"></div>
+<div class="fg"><label>走失地点</label><input id="pl" placeholder="详细地址, 如: 西湖区文三路478号"></div>
+<div class="fg"><label>描述</label><textarea id="pdesc" placeholder="描述走失时的具体情况…"></textarea></div>
+<div class="fg"><label>照片</label><div style="display:flex;gap:4px"><div class="ph-slot" style="width:56px;height:56px;border:2px dashed var(--b);border-radius:6px;display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:18px;color:var(--t2)" onclick="this.innerHTML='&#128247;';this.style.borderStyle='solid';this.style.borderColor='var(--p)';this.style.background='var(--pl)'">+</div></div></div>
+<div class="fg-row"><div class="fg"><label>悬赏(元)</label><select id="prw" style="padding:5px;border:1px solid var(--b);border-radius:6px;font-size:12px;background:var(--c);color:var(--t)"><option value="0">不设置</option><option value="100">100</option><option value="200">200</option><option value="500">500</option><option value="1000">1000</option><option value="5000">5000</option></select></div>
+<div class="fg"><label>联系方式</label><input id="pct" placeholder="手机或微信号"></div></div>
+<button class="btn btn-p btn-block" onclick="subPost()">&#9989; 免费发布</button>
+<p style="font-size:11px;color:var(--t2);text-align:center;margin-top:4px">邀请3位好友即可解锁更多发布权限</p></div></div></div>
+<div class="page" id="pageInvite"><div class="card"><div class="card-bd" style="text-align:center;padding:14px"><p style="font-size:12px;color:var(--t2)">你的专属邀请码</p><div class="inv-code" id="invCode">PH2893</div>
+<p style="font-size:11px;color:var(--t2);margin:2px 0">https://pethome.app/invite/PH2893</p>
+<button class="btn btn-sm btn-g" onclick="cpInv()">&#128203; 复制链接</button></div></div>
+<div class="card"><div class="card-hd">&#127919; 邀请奖励进度</div><div class="card-bd" id="invProg"></div></div>
+<div class="card"><div class="card-hd">&#127942; 排行榜 TOP10</div><div class="card-bd" id="lb"></div></div></div>
+<div class="page" id="pageProfile">
+<div class="card"><div class="card-bd" style="text-align:center;padding:14px"><div style="font-size:44px">&#128100;</div><h3 id="profName">宠物主人</h3><p style="color:var(--t2);font-size:11px" id="profLevel">基础用户</p></div></div>
+<div class="card"><div class="card-hd">&#128200; 数据</div><div class="card-bd"><div style="display:grid;grid-template-columns:repeat(4,1fr);gap:4px;text-align:center">
+<div><div style="font-size:18px;font-weight:700;color:var(--p)" id="stPosts">0</div><div style="font-size:10px;color:var(--t2)">发布</div></div>
+<div><div style="font-size:18px;font-weight:700;color:var(--s)" id="stFound">0</div><div style="font-size:10px;color:var(--t2)">找回</div></div>
+<div><div style="font-size:18px;font-weight:700;color:var(--g)" id="stInv">0</div><div style="font-size:10px;color:var(--t2)">邀请</div></div>
+<div><div style="font-size:18px;font-weight:700;color:var(--d)" id="stPts">0</div><div style="font-size:10px;color:var(--t2)">积分</div></div>
+</div></div></div>
+<div class="card"><div class="card-hd">&#128142; VIP会员</div><div class="card-bd">
+<div class="plan-c" onclick="showPay('月度VIP',29.9)"><div class="nm">&#128142; 月度VIP</div><div class="pr">&#165;29.9 <sp>/ 月</sp></div></div>
+<div class="plan-c" onclick="showPay('季度VIP',68)"><div class="nm">&#128142; 季度VIP</div><div class="pr">&#165;68 <sp>/ 季</sp><sp style="margin-left:4px;color:var(--s);font-size:10px">省¥21.7</sp></div></div>
+<div class="plan-c pop" onclick="showPay('年度VIP',198)"><div class="nm">&#128142; 年度VIP</div><div class="pr">&#165;198 <sp>/ 年</sp><sp style="margin-left:4px;color:var(--s);font-size:10px">省¥160.8</sp></div></div>
+<div class="plan-c" onclick="showPay('永久VIP',498)"><div class="nm">&#128142; 永久VIP</div><div class="pr">&#165;498 <sp>/ 永久</sp><sp style="margin-left:4px;color:var(--g);font-size:10px">限时活动</sp></div></div>
+</div></div>
+<div class="card"><div class="card-hd">&#127775; 每日任务 <span style="font-size:11px;font-weight:400;color:var(--t2)">每天0点重置</span></div><div class="card-bd" id="taskList"></div></div>
+<div class="card"><div class="card-hd">&#127775; 邀请解锁VIP</div><div class="card-bd"><div style="display:flex;justify-content:space-between;font-size:12px">已邀 <b id="prInv">0</b> / 30 人</div><div style="height:6px;background:var(--b);border-radius:3px;margin:4px 0;overflow:hidden"><div id="prInvBar" style="height:100%;background:var(--g);border-radius:3px;width:0%"></div></div><p style="font-size:11px;color:var(--g)" id="prInvNext">距永久VIP还差30人</p></div></div>
+</div>
+<div class="modal-overlay" id="payModal"><div class="modal"><h2 id="payTitle">&#128142; 选择套餐</h2><div class="pay-b"><div class="big" id="payAmt">&#165;99</div></div>
+<p style="font-size:12px;text-align:center;color:var(--t2);margin:4px 0">请选择支付方式</p>
+<div style="display:flex;gap:6px;margin:4px 0"><button class="btn btn-sm btn-p" style="flex:1" onclick="showToast('请打开支付宝转账至 hezhong_z@aliyun.com')">&#128153; 支付宝</button>
+<button class="btn btn-sm btn-g" style="flex:1" onclick="showToast('请添加微信 MoreRoadSafety 转账')">&#128154; 微信</button></div>
+<p style="font-size:10px;text-align:center;color:var(--t2)">转账后发送截图，即刻激活VIP</p>
+<button class="close-btn" onclick="closeModal('pay')">确定</button></div></div>
+<div class="modal-overlay" id="storyModal"><div class="modal"><h2>&#127775; 分享找回故事</h2>
+<div class="fg"><label>宠物名字</label><input id="sn" placeholder="如: 咪咪"></div>
+<div class="fg"><label>找回城市</label><input id="sc" placeholder="如: 杭州"></div>
+<div class="fg"><label>你的故事</label><textarea id="ss" placeholder="分享找回的过程…"></textarea></div>
+<button class="btn btn-p btn-block" onclick="subStory()">发布故事</button>
+<button class="close-btn" onclick="closeModal('story')">取消</button></div></div>
+<div class="toast" id="toast"></div>
+</div>
+<script>
+// === STATE ===
+var ST = {invites:0,pts:200,vip:0,posts:[],stories:[],tasks:{ck:0,bw:0,lk:0,cm:0,pp:0,iv:0},lastCheckin:"",checkinDays:0,phone:"",loggedIn:false};
+
+// === PERSISTENCE ===
+function LS(){try{var s=JSON.parse(localStorage.getItem("ph2"));if(s){Object.assign(ST,s)}}catch(e){}}
+function SV(){try{localStorage.setItem("ph2",JSON.stringify(ST))}catch(e){}}
+
+// === INVITE REWARDS ===
+var IR = [
+  {need:1,reward:"解锁第2条启事"},{need:2,reward:"解锁第3条启事"},{need:3,reward:"24小时VIP体验"},{need:5,reward:"3天VIP体验"},{need:8,reward:"7天VIP体验"},
+  {need:10,reward:"15天VIP体验"},{need:15,reward:"30天VIP体验"},{need:20,reward:"90天VIP体验"},{need:30,reward:"永久VIP+守护者勋章"},{need:50,reward:"永久VIP+爱心大使+金框"},{need:100,reward:"永久VIP+超级合伙人+二级返利"}
+];
+
+// === TASKS ===
+var TK = [
+  {n:"签到 +10积分",k:"ck",pt:10,lim:1,icon:"\ud83d\udcc5"},
+  {n:"浏览10条启事 +20积分",k:"bw",pt:20,lim:10,icon:"\ud83d\udc40"},
+  {n:"点赞20次 +20积分",k:"lk",pt:20,lim:20,icon:"\ud83d\udc4d"},
+  {n:"发表5条评论 +15积分",k:"cm",pt:15,lim:5,icon:"\ud83d\udcac"},
+  {n:"发布3条帖子 +30积分",k:"pp",pt:30,lim:3,icon:"\ud83d\udcf0"},
+  {n:"邀请1位好友 +50积分",k:"iv",pt:50,lim:1,icon:"\ud83c\udf89"}
+];
+
+// === LOGIN ===
+function sendSMS(){var p=document.getElementById("phoneInput").value;if(p.length<11){showToast("请输入11位手机号");return}showToast("验证码已发送至 "+p.slice(0,3)+"****"+p.slice(7))}
+function doLogin(){var p=document.getElementById("phoneInput").value;if(p.length<11){showToast("请输入手机号");return}ST.phone=p;ST.loggedIn=true;LS();ST.pts=ST.pts||200;ST.invites=ST.invites||0;SV();enterApp()}
+function wechatLogin(){showToast("微信授权登录成功");ST.loggedIn=true;LS();ST.pts=ST.pts||200;ST.invites=ST.invites||0;SV();enterApp()}
+function enterApp(){
+  document.getElementById("loginPage").style.display="none";
+  document.getElementById("appMain").style.display="block";
+  document.getElementById("profName").textContent=ST.phone?ST.phone.slice(0,3)+"****"+ST.phone.slice(7):"宠物主人";
+  refreshAll();
+  if("serviceWorker" in navigator){window.addEventListener("load",function(){navigator.serviceWorker.register("sw.js")})}
+}
+
+// === NAV ===
+function navTo(p){
+  var m={home:"pageHome",search:"pageSearch",post:"pagePost",invite:"pageInvite",profile:"pageProfile"};
+  document.querySelectorAll(".page").forEach(function(x){x.classList.remove("active")});
+  if(m[p])document.getElementById(m[p]).classList.add("active");
+  var t=["home","search","post","invite","profile"];
+  document.querySelectorAll(".nav-item").forEach(function(n,i){n.classList.toggle("active",t[i]===p)});
+  if(p==="invite")renderInv();
+  if(p==="profile")renderPro();
+}
+
+// === FEED ===
+function renderFeed(){
+  var h="";
+  var demo=[
+    {n:"咔咔",t:"cat",b:"橘猫",l:"西湖区文三路",tm:"3小时前",u:true,r:500},
+    {n:"旺财",t:"dog",b:"柴犬",l:"拱墅区大关路",tm:"1天前",u:false,r:200},
+    {n:"小白",t:"cat",b:"白猫",l:"上城区解放路",tm:"5小时前",u:true,r:1000},
+    {n:"豆豆",t:"dog",b:"泰迪",l:"下城区延安路",tm:"6小时前",u:false,r:300}
+  ];
+  var all = demo.concat(ST.posts);
+  all.sort(function(a,b){return (b._t||0) - (a._t||0)});
+  if(all.length===0){h='<div class="empty-s">暂无寻宠信息</div>'}
+  all.forEach(function(p){
+    var ic={cat:"\ud83d\udc31",dog:"\ud83d\udc36",other:"\ud83d\udc3b"};
+    var ug=p.u?" <span style=\"color:var(--da);font-size:10px\">\u26a0\ufe0f \u7d27\u6025</span>":"";
+    var rw=p.r>0?"<span class=\"tag-rwd\">\u60ac\u8d4f \u00a5"+p.r+"</span>":"";
+    var tag=p._user?"<span style=\"background:var(--d)!important;color:#fff!important\">\u6211\u7684</span>":"";
+    h+="<div class=\"card\" onclick=\"showDetail('"+p.n+"','"+p.b+"','"+p.l+"','"+(p.desc||"")+"','"+(p.ct||"")+"',"+p.r+")\" style=\"animation:fadeIn .3s\"><div class=\"pet-card\"><div class=\"av\">"+ic[p.t]+"</div><div class=\"info\"><h4>"+p.n+ug+"</h4><div class=\"tags\"><span>"+p.b+"</span><span>"+p.l+"</span>"+rw+tag+"</div><div class=\"meta\">"+p.tm+"</div></div></div></div>"
+  });
+  document.getElementById("feed").innerHTML=h;
+  document.getElementById("feedLabel").textContent=all.length+" 条";
+}
+
+// === POST ===
+function subPost(){
+  var n=document.getElementById("pn").value||"\u672a\u547d\u540d";
+  var b=document.getElementById("pb").value||"\u672a\u77e5";
+  var l=document.getElementById("pl").value||"\u672a\u77e5\u5730\u70b9";
+  var d=document.getElementById("pdesc").value||"";
+  var c=document.getElementById("pct").value||"\u672a\u586b\u5199";
+  var r=parseInt(document.getElementById("prw").value)||0;
+  var t=document.getElementById("ptype").value;
+  var post={n:n,b:b,l:l,desc:d,ct:c,r:r,t:t,u:false,tm:"\u521a\u53d1\u5e03",_t:Date.now(),_user:true};
+  ST.posts.push(post);
+  ST.pts+=10;
+  // Task progress
+  ST.tasks.pp=(ST.tasks.pp||0)+1;
+  SV();
+  showToast("\u2705 \u5df2\u53d1\u5e03\uff01\u79ef\u5206+10");
+  refreshAll();
+  navTo("home");
+  // Clear form
+  document.getElementById("pn").value="";document.getElementById("pb").value="";document.getElementById("pl").value="";
+  document.getElementById("pdesc").value="";document.getElementById("pct").value="";
+}
+
+function showDetail(n,b,l,d,c,r){
+  var msg=n+"("+b+")\n\u5730\u70b9: "+l+"\n\u63cf\u8ff0: "+(d||"\u6682\u65e0")+"\n\u8054\u7cfb: "+(c||"\u672a\u63d0\u4f9b");
+  if(r>0)msg+="\n\u60ac\u8d4f: \u00a5"+r;
+  showToast(msg.slice(0,40)+"...");
+}
+
+// === INVITE SYSTEM ===
+function renderInv(){
+  var inv=ST.invites||0;
+  document.getElementById("invCountB").textContent=inv;
+  document.getElementById("prInv").textContent=inv;
+  // Update invite code
+  var ic=document.getElementById("invCode");
+  if(ic&&!ic.dataset.set){ic.textContent="PH"+(1000+Math.floor(Math.random()*8999));ic.dataset.set="1"}
+  // Progress bars
+  var pct=Math.min(inv/30*100,100);
+  document.getElementById("invBar").style.width=pct+"%";
+  var pb=document.getElementById("prInvBar");if(pb)pb.style.width=pct+"%";
+  var rn=document.getElementById("prInvNext");if(rn)rn.textContent="\u8ddd\u6c38\u4e45VIP\u8fd8\u5dee"+Math.max(30-inv,0)+"\u4eba";
+  // Next reward text
+  var txt="\u90803\u4eba\u900124hVIP";
+  if(inv>=30){txt="\ud83c\udf89 \u6c38\u4e45VIP\u5df2\u89e3\u9501!"}else if(inv>=20){txt="\u5df2\u83b790\u5929VIP! \u908030\u4eba\u9001\u6c38\u4e45"}else if(inv>=15){txt="\u5df2\u83b730\u5929VIP! \u908020\u4eba\u900190\u5929"}else if(inv>=10){txt="\u5df2\u83b715\u5929VIP! \u908015\u4eba\u900130\u5929"}else if(inv>=8){txt="\u5df2\u83b77\u5929VIP! \u908010\u4eba\u900115\u5929"}else if(inv>=5){txt="\u5df2\u83b73\u5929VIP! \u90808\u4eba\u90017\u5929"}else if(inv>=3){txt="\u5df2\u83b724hVIP! \u90805\u4eba\u90013\u5929"}
+  document.getElementById("invNext").textContent=txt;
+  // Rewards list
+  var h="";IR.forEach(function(r,i){var u=i+1;var d=inv>=u;var c=inv===u-1;
+    h+="<div class=\"rl\"><span "+(c?"style=\"color:var(--p);font-weight:600\"":"")+">\u9080\u8bf7 "+u+" \u4eba"+(d?" "+r.reward:"")+"</span><span class=\""+(d?"ck":c?"":"lk")+"\">"+(d?"\u2713":c?"\u25b6":"\ud83d\udd12")+"</span></div>"
+  });document.getElementById("invProg").innerHTML=h;
+  // Leaderboard
+  var lb=[{n:"\u5f20\u4e09",c:45},{n:"\u674e\u56db",c:32},{n:"\u738b\u4e94",c:28},{n:"\u6768\u5c0f\u59d0",c:24},{n:"\u5ba0\u5ba0\u4e3b\u4eba",c:21}];
+  lb.unshift({n:"\u6211",c:inv});lb.sort(function(a,b){return b.c-a.c});
+  var lh="";lb.slice(0,10).forEach(function(u,i){
+    var md=i===0?"\ud83e\udd47":i===1?"\ud83e\udd48":i===2?"\ud83e\udd49":"#"+(i+1);
+    var fw=u.n==="\u6211"?"700":"400";
+    lh+="<div class=\"lb-i\"><div class=\"rk\">"+md+"</div><span style=\"flex:1;font-weight:"+fw+"\">"+u.n+"</span><span style=\"color:var(--g);font-weight:700\">"+u.c+" \u4eba</span></div>"
+  });document.getElementById("lb").innerHTML=lh;
+}
+
+function doInvite(){
+  ST.invites=(ST.invites||0)+1;
+  ST.pts+=50;
+  ST.tasks.iv=(ST.tasks.iv||0)+1;
+  SV();
+  showToast("\ud83c\udf89 \u9080\u8bf7\u6210\u529f! \u79ef\u5206+50");
+  refreshAll();
+  // Invite from profile too
+  if(document.getElementById("stInv"))document.getElementById("stInv").textContent=ST.invites;
+}
+
+function cpInv(){
+  var c=document.getElementById("invCode");
+  if(c)navigator.clipboard.writeText("https://pethome.app/invite/"+c.textContent).then(function(){showToast("\u94fe\u63a5\u5df2\u590d\u5236\uff0c\u53d1\u7ed9\u597d\u53cb\u5373\u53ef\u9080\u8bf7")})
+}
+
+// Add doInvite button to invite page
+function addInviteBtn(){var b=document.querySelector("#pageInvite .card:first-child .btn");if(b)b.textContent="\ud83c\udf89 \u6a21\u62df\u9080\u8bf7\u597d\u53cb";}
+setTimeout(addInviteBtn,100);
+
+// === TASKS ===
+function renderTasks(){
+  var h="";TK.forEach(function(t,i){
+    var d=ST.tasks[t.k]||0;var mx=t.lim;var done=d>=mx;
+    h+="<div class=\"task-i\"><div class=\"cb "+(done?"done":"")+"\" onclick=\"doTask("+i+")\">"+(done?"\u2713":"")+"</div><div class=\"tinfo\" style=\"flex:1\">"+t.icon+" "+t.n+"<br><span style=\"color:var(--t2);font-size:10px\">"+d+"/"+mx+"</span></div></div>"
+  });var el=document.getElementById("taskList");if(el)el.innerHTML=h;
+}
+
+function doTask(i){
+  var t=TK[i];
+  if(ST.tasks[t.k]>=t.lim){showToast("\u4eca\u65e5\u5df2\u5b8c\u6210");return}
+  ST.tasks[t.k]=(ST.tasks[t.k]||0)+1;
+  ST.pts+=t.pt;
+  SV();
+  renderTasks();updatePts();
+  showToast(t.icon+" "+t.n+" +"+t.pt+"\u79ef\u5206");
+}
+
+// === CHECKIN ===
+function doCheckin(){
+  var t=new Date().toISOString().slice(0,10);
+  if(ST.lastCheckin===t){showToast("\u4eca\u5929\u5df2\u7b7e\u5230");return}
+  ST.lastCheckin=t;ST.checkinDays++;ST.pts+=10;ST.tasks.ck=(ST.tasks.ck||0)+1;
+  SV();updatePts();renderTasks();
+  showToast("\u2705 \u7b7e\u5230\u6210\u529f! +10\u79ef\u5206");
+  if(ST.checkinDays%7===0){ST.pts+=80;showToast("\ud83c\udf89 \u8fde\u7eed\u7b7e\u52307\u5929! +80\u79ef\u5206")}
+}
+
+// === STORIES ===
+function subStory(){
+  var n=document.getElementById("sn").value||"\u672a\u547d\u540d";
+  var s=document.getElementById("ss").value||"";if(!s){showToast("\u8bf7\u586b\u5199\u6545\u4e8b");return}
+  ST.stories.push({name:n,story:s,time:new Date().toISOString().slice(0,10),likes:0});
+  ST.pts+=20;
+  SV();closeModal("story");showToast("\u2705 \u6545\u4e8b\u5df2\u53d1\u5e03! +20\u79ef\u5206");
+  refreshAll();
+}
+
+// === PAYMENT ===
+function showPay(n,a){
+  document.getElementById("payTitle").innerHTML="\ud83d\udc98 "+n;
+  document.getElementById("payAmt").innerHTML="\u00a5"+a;
+  openModal("pay");
+}
+
+// === MODAL ===
+function openModal(i){var e=document.getElementById(i+"Modal");if(e)e.classList.add("show")}
+function closeModal(i){var e=document.getElementById(i+"Modal");if(e)e.classList.remove("show")}
+
+// === TOAST ===
+function showToast(m){
+  var t=document.getElementById("toast");if(!t)return;
+  t.innerHTML=m;t.classList.add("show");
+  clearTimeout(t._t);t._t=setTimeout(function(){t.classList.remove("show")},2800);
+}
+
+// === UI UPDATE ===
+function updatePts(){document.getElementById("ptsTop").textContent=ST.pts}
+function renderPro(){
+  document.getElementById("stPosts").textContent=ST.posts.length;
+  document.getElementById("stFound").textContent=ST.stories.length;
+  document.getElementById("stInv").textContent=ST.invites||0;
+  updatePts();renderTasks();
+}
+
+function refreshAll(){
+  renderFeed();renderInv();renderPro();updatePts();
+  document.getElementById("invCountB").textContent=ST.invites||0;
+  document.getElementById("prInv").textContent=ST.invites||0;
+  document.getElementById("stInv").textContent=ST.invites||0;
+  document.getElementById("stPosts").textContent=ST.posts.length;
+  document.getElementById("stFound").textContent=ST.stories.length;
+  // VIP badge
+  var vb=document.getElementById("vipLabel");
+  if(ST.invites>=30||ST.vip){vb.textContent="\ud83d\udc98 \u6c38\u4e45VIP";vb.style.background="rgba(255,215,0,.3)";vb.style.padding="1px 8px";vb.style.borderRadius="8px"}
+}
+
+// === TOGGLE PILLS ===
+function tog(el){el.classList.toggle("active")}
+
+// === INIT ===
+LS();
+if(ST.loggedIn){document.getElementById("loginPage").style.display="none";document.getElementById("appMain").style.display="block";refreshAll();document.getElementById("profName").textContent=ST.phone?ST.phone.slice(0,3)+"****"+ST.phone.slice(7):"\u5ba0\u7269\u4e3b\u4eba"}
+document.getElementById("pd").value=new Date().toISOString().slice(0,10);
+</script></body></html>
